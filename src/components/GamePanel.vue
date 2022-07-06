@@ -1,18 +1,30 @@
 <script setup>
-import {defineProps} from "vue";
-defineProps({
+import {defineProps, defineEmits, watch} from "vue";
+const props = defineProps({
   challenge : Array,
-  answer_challenge: Array
+  answer_challenge: Array,
+  cell_selected: Object,
+  auto_check_mistakes: Boolean
 })
-
+const emits = defineEmits(['update_cell_selected'])
+const update_cell_selected = (obj,row,col) =>{
+  emits('update_cell_selected',{...obj,row: row,col: col})
+}
+watch(props.challenge,()=>{
+  console.log(props.challenge)
+})
 </script>
 
 <template>
   <div>
-    <div class="row-flex" v-for="(row,index) in challenge.length" :key="row" :class="{borderBottom: (index+1) % 3 === 0 ,borderTop: index === 0}">
-      <div class="number" v-for="(column,index) in challenge[row-1]" :key="column" :class="{read_only: column.read_only,borderLeft: (index) % 3 === 0,borderRight: index === 8}">
+    <div class="row_flex" v-for="(row,index) in challenge.length" :key="row" :class="{border_bottom: (index+1) % 3 === 0 ,border_top: index === 0}">
+      <div class="number_wrapper" v-for="(column,index) in challenge[row-1]" :key="index" @click="update_cell_selected(column,row-1,index)"
+           :class="{read_only: column.read_only,active: column.active,border_left: (index) % 3 === 0,border_right: index === 8}">
         <section v-if="!column.read_only">
-          <div class="note-wrapper">
+          <span v-if="column.num !== 0" class="number" :class="{error: column.error && auto_check_mistakes}">
+            {{column.num}}
+          </span>
+          <div class="note_wrapper" v-else>
             <span v-for="number in 9" :key="number">
               <span v-for="number_note in column.note" :key="number_note">
                 <span v-show="number === number_note">{{number}}</span>
@@ -29,15 +41,15 @@ defineProps({
 </template>
 
 <style lang="scss" scoped>
-.row-flex{
+.row_flex{
   display: flex;
   flex-direction: row;
-  .number{
+  .number_wrapper{
     border: 0.5px solid lightgray;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: aqua;
+    color: blue;
     font-size: 30px;
     margin: 0;
     width: 55px;
@@ -46,7 +58,10 @@ defineProps({
     -webkit-touch-callout: none!important;
     -webkit-user-select: none!important;
     -ms-user-select: none!important;
-    .note-wrapper{
+    .error{
+      color: red;
+    }
+    .note_wrapper{
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
@@ -58,19 +73,22 @@ defineProps({
       margin: 0;
     }
   }
+  .active{
+    background-color: skyblue;
+  }
   .read_only{
     color: black;
   }
-  .borderLeft{
+  .border_left{
     border-left: 2px solid black;
   }
-  .borderRight{
+  .border_right{
     border-right: 2px solid black;
   }
-  &.borderBottom{
+  &.border_bottom{
     border-bottom: 2px solid black;
   }
-  &.borderTop{
+  &.border_top{
     border-top: 2px solid black;
   }
 }

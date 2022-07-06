@@ -3,13 +3,13 @@ function make_challenge_answer (list_read_only){
     for( let row = 0; row < 9; row++){
         list_challenge.push([])
         for (let column = 0; column < 9; column++){
-            list_challenge[row].push({num: 0,read_only: false, active: false,note: []})
+            list_challenge[row].push({num: 0,read_only: false, active: false,error: false,note: []})
         }
     }
     for (let element = 0; element < list_read_only.length; element++){
-        let row_list = list_read_only[element].row
+        const row_list = list_read_only[element].row
         for (let child_element = 0; child_element < list_read_only[element].value.length; child_element++){
-            let col_list = list_read_only[element].value[child_element].column
+            const col_list = list_read_only[element].value[child_element].column
             list_challenge[row_list][col_list].num = list_read_only[element].value[child_element].num
             list_challenge[row_list][col_list].read_only = true
             delete list_challenge[row_list][col_list].note
