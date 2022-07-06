@@ -1,72 +1,54 @@
 <script setup>
 import {ref} from "vue";
 import {challenge_3,answer_challenge_3} from "@/components/challenges";
-const languages = ref([{name:'English',value:'en'},{name:'Vietnamese',value:'vi'}])
+import HeaderPanel from "@/components/HeaderPanel";
+import GamePanel from "@/components/GamePanel";
+import GameControlPanel from "@/components/GameControlPanel";
+import ButtonControlPanel from "@/components/ButtonControlPanel";
+const status_note = ref(false)
+const auto_check_mistakes = ref(false)
+const undo = ()=>{
+
+}
+const erase = ()=>{
+
+}
+const note = ()=>{
+
+}
+const hint = ()=>{
+
+}
 </script>
 
 <template>
-  <div class="header">
-    <p>Sudoku.com</p>
-    <select v-model="$i18n.locale">
-      <option v-for="locale in languages" :key="locale.name" :value="locale.value" >
-        {{ locale.name }}
-      </option>
-    </select>
-  </div>
+  <header-panel />
   <div class="content">
     <div class="sudoku-wrapper">
-      <div class="row-flex" v-for="(row,index) in challenge_3.length" :key="row" :class="{borderBottom: (index+1) % 3 === 0 ,borderTop: index === 0}">
-        <p v-for="(column,index) in challenge_3[row-1]" :key="column" :class="{read_only: column.read_only,borderLeft: (index) % 3 === 0,borderRight: index === 8}">
-          {{column.num === 0 ? answer_challenge_3[row-1][index].num : column.num}}
-        </p>
+      <div style="font-size: 20px">
+        Auto_Check  <input type="checkbox" v-model="auto_check_mistakes" style="width: 20px;height: 20px">
+      </div>
+      <div class="game-wrapper">
+        <game-panel :challenge="challenge_3" :answer_challenge="answer_challenge_3" style="width: 500px;" />
+        <game-control-panel>
+          <button-control-panel @undo="undo" @erase="erase" @note="note" @hint="hint" :status_note="status_note"/>
+        </game-control-panel>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.header{
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  align-content: baseline;
-  font-size: 50px;
-  height: 70px;
-  border-bottom: 1px solid whitesmoke;
-  margin-bottom: 30px;
-}
 .content{
   height: 100%;
-  .sudoku-wrapper{
+  .sudoku-wrapper {
+    display: flex;
+    flex-direction: column;
     margin: 0 auto;
-    width: 750px;
-    .row-flex{
+    width: 900px;
+    .game-wrapper{
       display: flex;
-      flex-direction: row;
-      p{
-        border: 1px solid gray;
-        padding: 10px;
-        margin: 0;
-        font-size: 50px;
-        flex: 1;
-        text-align: center;
-        color: aqua;
-      }
-      .read_only{
-        color: black;
-      }
-      .borderLeft{
-        border-left: 4px solid black;
-      }
-      .borderRight{
-        border-right: 4px solid black;
-      }
-      &.borderBottom{
-        border-bottom: 4px solid black;
-      }
-      &.borderTop{
-        border-top: 4px solid black;
-      }
+      gap: 40px
     }
   }
 }
