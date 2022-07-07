@@ -8,10 +8,10 @@ const emits = defineEmits(['undo','erase','note','hint'])
 
 <template>
   <div class="control">
-    <button @click="emits('undo')">Undo</button>
-    <button @click="emits('erase')">Erase</button>
-    <button @click="emits('note')">Notes ({{status_note}})</button>
-    <button @click="emits('hint')">Hint</button>
+    <button @click="emits('undo')">{{$t('undo')}}</button>
+    <button @click="emits('erase')">{{$t('erase')}}</button>
+    <button @click="emits('note')">{{$t('notes')}} ({{$t(String(status_note))}})</button>
+    <button @click="emits('hint')">{{$t('hint')}}</button>
   </div>
 </template>
 

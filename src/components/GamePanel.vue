@@ -1,25 +1,27 @@
 <script setup>
-import {defineProps, defineEmits, watch} from "vue";
+import {defineProps, defineEmits, computed} from "vue";
 const props = defineProps({
   challenge : Array,
   answer_challenge: Array,
   cell_selected: Object,
-  auto_check_mistakes: Boolean
+  auto_check_mistakes: Boolean,
+  done: Boolean
+})
+const hen = computed(()=>{
+  console.log(props.done)
+  return props.done
 })
 const emits = defineEmits(['update_cell_selected'])
 const update_cell_selected = (obj,row,col) =>{
   emits('update_cell_selected',{...obj,row: row,col: col})
 }
-watch(props.challenge,()=>{
-  console.log(props.challenge)
-})
 </script>
 
 <template>
-  <div>
-    <div class="row_flex" v-for="(row,index) in challenge.length" :key="row" :class="{border_bottom: (index+1) % 3 === 0 ,border_top: index === 0}">
-      <div class="number_wrapper" v-for="(column,index) in challenge[row-1]" :key="index" @click="update_cell_selected(column,row-1,index)"
-           :class="{read_only: column.read_only,active: column.active,border_left: (index) % 3 === 0,border_right: index === 8}">
+  <div v-if="!hen">
+    <div class="row_flex" v-for="(row,index_row) in challenge.length" :key="row" :class="{border_bottom: (index_row+1) % 3 === 0 ,border_top: index_row === 0}">
+      <div class="number_wrapper" v-for="(column,index_col) in challenge[row-1]" :key="index_col" @click="update_cell_selected(column,row-1,index_col)"
+           :class="{read_only: column.read_only,active: column.active,border_left: (index_col) % 3 === 0,border_right: index_col === 8}">
         <section v-if="!column.read_only">
           <span v-if="column.num !== 0" class="number" :class="{error: column.error && auto_check_mistakes}">
             {{column.num}}
@@ -37,6 +39,9 @@ watch(props.challenge,()=>{
         </section>
       </div>
     </div>
+  </div>
+  <div v-else>
+    Good job !!!
   </div>
 </template>
 

@@ -6,7 +6,7 @@ const emits = defineEmits(['set_number','new_game'])
 
 <template>
   <div class="game_control_wrapper">
-    <button style="width: 100%;height: 50px" @click="emits('new_game')">New Game</button>
+    <button style="width: 100%;height: 50px" @click="emits('new_game')">{{$t('new_game')}}</button>
     <slot />
     <div class="number_wrapper">
       <p v-for="number in 9" :key="number" @click="emits('set_number',number)">{{number}}</p>

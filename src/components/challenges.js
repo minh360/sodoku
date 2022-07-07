@@ -1,4 +1,4 @@
-function make_challenge_answer (list_read_only){
+function make_challenge (list_read_only){
     let list_challenge = []
     for( let row = 0; row < 9; row++){
         list_challenge.push([])
@@ -17,7 +17,17 @@ function make_challenge_answer (list_read_only){
     }
     return list_challenge
 }
-
+function make_answer (list_challenge,list_answer){
+    let challenge =  make_challenge(read_only_1)
+    for (let element = 0; element < list_answer.length; element++){
+        const row_list = list_answer[element].row
+        for (let child_element = 0; child_element < list_answer[element].value.length; child_element++){
+            const col_list = list_answer[element].value[child_element].column
+            challenge[row_list][col_list].num = list_answer[element].value[child_element].num
+        }
+    }
+    return challenge
+}
 const read_only_1 = [
     {row: 0,value:[{column: 1,num: 7},{column: 2,num: 8},{column: 3,num: 5},{column: 4,num: 1},{column: 5,num: 4},{column: 6,num: 9},{column: 8,num: 2}]},
     {row: 1,value:[{column: 0,num: 5},{column: 1,num: 6},{column: 5,num: 9},{column: 6,num: 3}]},
@@ -84,10 +94,11 @@ const answer_3 = [
     {row: 7,value:[{column: 0,num: 7},{column: 2,num: 3},{column: 3,num: 4},{column: 4,num: 2},{column: 7,num: 8},{column: 8,num: 5}]},
     {row: 8,value:[{column: 0,num: 9},{column: 4,num: 6},{column: 5,num: 1},{column: 6,num: 3}]}
 ]
-export const answer_challenge_1 = make_challenge_answer(answer_1)
-export const answer_challenge_2 = make_challenge_answer(answer_2)
-export const answer_challenge_3 = make_challenge_answer(answer_3)
-export const challenge_1 = make_challenge_answer(read_only_1)
-export const challenge_2 = make_challenge_answer(read_only_2)
-export const challenge_3 = make_challenge_answer(read_only_3)
+export const challenge_1 = make_challenge(read_only_1)
+export const challenge_2 = make_challenge(read_only_2)
+export const challenge_3 = make_challenge(read_only_3)
+export const answer_challenge_1 = make_answer(challenge_1,answer_1)
+export const answer_challenge_2 = make_answer(challenge_2,answer_2)
+export const answer_challenge_3 = make_answer(challenge_3,answer_3)
+
 
