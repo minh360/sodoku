@@ -20,11 +20,10 @@ const emits = defineEmits(['set_number','new_game'])
   flex-direction: column;
   gap: 30px;
   .number_wrapper{
-    flex: 1;
     flex-direction: row;
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(3, 108px);
+    grid-template-columns: repeat(3, 112px);
     grid-template-rows: repeat(3, 108px);
     text-align: center;
     p{

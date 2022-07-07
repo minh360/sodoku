@@ -1,47 +1,49 @@
 <script setup>
-import {defineProps, defineEmits, computed} from "vue";
-const props = defineProps({
+import {defineProps, defineEmits} from "vue";
+defineProps({
   challenge : Array,
   answer_challenge: Array,
   cell_selected: Object,
   auto_check_mistakes: Boolean,
-  done: Boolean
+  done: Boolean,
+  pause: Boolean
 })
-const hen = computed(()=>{
-  console.log(props.done)
-  return props.done
-})
-const emits = defineEmits(['update_cell_selected'])
+const emits = defineEmits(['update_cell_selected','continue_clock'])
 const update_cell_selected = (obj,row,col) =>{
   emits('update_cell_selected',{...obj,row: row,col: col})
 }
 </script>
 
 <template>
-  <div v-if="!hen">
-    <div class="row_flex" v-for="(row,index_row) in challenge.length" :key="row" :class="{border_bottom: (index_row+1) % 3 === 0 ,border_top: index_row === 0}">
-      <div class="number_wrapper" v-for="(column,index_col) in challenge[row-1]" :key="index_col" @click="update_cell_selected(column,row-1,index_col)"
-           :class="{read_only: column.read_only,active: column.active,border_left: (index_col) % 3 === 0,border_right: index_col === 8}">
-        <section v-if="!column.read_only">
+  <div v-if="!pause">
+    <div v-if="!done">
+      <div class="row_flex" v-for="(row,index_row) in challenge.length" :key="row" :class="{border_bottom: (index_row+1) % 3 === 0 ,border_top: index_row === 0}">
+        <div class="number_wrapper" v-for="(column,index_col) in challenge[row-1]" :key="index_col" @click="update_cell_selected(column,row-1,index_col)"
+             :class="{read_only: column.read_only,active: column.active,border_left: (index_col) % 3 === 0,border_right: index_col === 8}">
+          <section v-if="!column.read_only">
           <span v-if="column.num !== 0" class="number" :class="{error: column.error && auto_check_mistakes}">
             {{column.num}}
           </span>
-          <div class="note_wrapper" v-else>
+            <div class="note_wrapper" v-else>
             <span v-for="number in 9" :key="number">
               <span v-for="number_note in column.note" :key="number_note">
                 <span v-show="number === number_note">{{number}}</span>
               </span>
             </span>
-          </div>
-        </section>
-        <section v-else>
-          {{column.num}}
-        </section>
+            </div>
+          </section>
+          <section v-else>
+            {{column.num}}
+          </section>
+        </div>
       </div>
+    </div>
+    <div v-else>
+      <p style=" width: 200px;height: 50px;margin-top: 200px;margin-left: 150px">Good job !!!</p>
     </div>
   </div>
   <div v-else>
-    Good job !!!
+    <button  @click="emits('continue_clock')">Continue</button>
   </div>
 </template>
 
