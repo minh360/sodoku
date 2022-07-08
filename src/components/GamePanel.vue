@@ -1,24 +1,27 @@
 <script setup>
 import {defineProps, defineEmits} from "vue";
+
 defineProps({
-  challenge : Array,
+  challenge: Array,
   answer_challenge: Array,
   cell_selected: Object,
   auto_check_mistakes: Boolean,
   done: Boolean,
   pause: Boolean
 })
-const emits = defineEmits(['update_cell_selected','continue_clock'])
-const update_cell_selected = (obj,row,col) =>{
-  emits('update_cell_selected',{...obj,row: row,col: col})
+const emits = defineEmits(['update_cell_selected', 'continue_clock'])
+const update_cell_selected = (obj, row, col) => {
+  emits('update_cell_selected', {...obj, row: row, col: col})
 }
 </script>
 
 <template>
   <div v-if="!pause">
     <div v-if="!done">
-      <div class="row_flex" v-for="(row,index_row) in challenge.length" :key="row" :class="{border_bottom: (index_row+1) % 3 === 0 ,border_top: index_row === 0}">
-        <div class="number_wrapper" v-for="(column,index_col) in challenge[row-1]" :key="index_col" @click="update_cell_selected(column,row-1,index_col)"
+      <div class="row_flex" v-for="(row,index_row) in challenge.length" :key="row"
+           :class="{border_bottom: (index_row+1) % 3 === 0 ,border_top: index_row === 0}">
+        <div class="number_wrapper" v-for="(column,index_col) in challenge[row-1]" :key="index_col"
+             @click="update_cell_selected(column,row-1,index_col)"
              :class="{read_only: column.read_only,active: column.active,border_left: (index_col) % 3 === 0,border_right: index_col === 8}">
           <section v-if="!column.read_only">
           <span v-if="column.num !== 0" class="number" :class="{error: column.error && auto_check_mistakes}">
@@ -43,15 +46,16 @@ const update_cell_selected = (obj,row,col) =>{
     </div>
   </div>
   <div v-else>
-    <button  @click="emits('continue_clock')">Continue</button>
+    <button @click="emits('continue_clock')">Continue</button>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.row_flex{
+.row_flex {
   display: flex;
   flex-direction: row;
-  .number_wrapper{
+
+  .number_wrapper {
     border: 0.5px solid lightgray;
     display: flex;
     align-items: center;
@@ -62,13 +66,15 @@ const update_cell_selected = (obj,row,col) =>{
     width: 55px;
     height: 50px;
     -moz-user-select: none !important;
-    -webkit-touch-callout: none!important;
-    -webkit-user-select: none!important;
-    -ms-user-select: none!important;
-    .error{
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -ms-user-select: none !important;
+
+    .error {
       color: red;
     }
-    .note_wrapper{
+
+    .note_wrapper {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
@@ -80,22 +86,28 @@ const update_cell_selected = (obj,row,col) =>{
       margin: 0;
     }
   }
-  .active{
+
+  .active {
     background-color: skyblue;
   }
-  .read_only{
+
+  .read_only {
     color: black;
   }
-  .border_left{
+
+  .border_left {
     border-left: 2px solid black;
   }
-  .border_right{
+
+  .border_right {
     border-right: 2px solid black;
   }
-  &.border_bottom{
+
+  &.border_bottom {
     border-bottom: 2px solid black;
   }
-  &.border_top{
+
+  &.border_top {
     border-top: 2px solid black;
   }
 }

@@ -1,14 +1,14 @@
 <script setup>
 import {ref} from "vue";
 
-const languages = ref([{name:'English',value:'en'},{name:'Vietnamese',value:'vi'}])
+const languages = ref([{name: 'English', value: 'en'}, {name: 'Vietnamese', value: 'vi'}])
 </script>
 
 <template>
   <div class="header">
     <p>Sudoku.com</p>
     <select v-model="$i18n.locale">
-      <option v-for="locale in languages" :key="locale.name" :value="locale.value" >
+      <option v-for="locale in languages" :key="locale.name" :value="locale.value">
         {{ locale.name }}
       </option>
     </select>
@@ -16,7 +16,7 @@ const languages = ref([{name:'English',value:'en'},{name:'Vietnamese',value:'vi'
 </template>
 
 <style scoped>
-.header{
+.header {
   display: flex;
   align-items: center;
   justify-content: space-around;
